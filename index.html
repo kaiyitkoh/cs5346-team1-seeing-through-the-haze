@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seeing through the Haze</title>
+</head>
+<body class="bg-surface text-on-surface font-body">
+
+  <!-- Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-title" style="text-decoration:none;color:inherit;">Seeing through the Haze</a>
+      <div class="nav-links">
+        <span id="psi-badge" class="psi-badge">PSI: ...</span>
+        <a href="index.html" class="nav-link nav-link--active">Story</a>
+        <a href="explorer.html" class="nav-link nav-link--inactive">Explorer</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Nav dots (fixed right) -->
+  <div class="nav-dots">
+    <button class="nav-dot" data-target="pattern" data-label="The Pattern" aria-label="Go to The Pattern section"></button>
+    <button class="nav-dot" data-target="source" data-label="The Source" aria-label="Go to The Source section"></button>
+    <button class="nav-dot" data-target="climate" data-label="The Climate Driver" aria-label="Go to The Climate Driver section"></button>
+    <button class="nav-dot" data-target="change" data-label="What Changed" aria-label="Go to What Changed section"></button>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero hero-section">
+    <img src="images/singapore_skyline_haze.png" alt="Singapore skyline obscured by haze" class="hero-image">
+    <span class="img-credit">Image by: Google Nano Banana</span>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Seeing through the Haze</h1>
+      <p class="hero-subtitle">Every year, a thick haze settles over Singapore. It travels thousands of kilometers from fires burning in Indonesia's soggy, carbon-rich soil (called <span data-term="peatland" tabindex="0" aria-describedby="term-tooltip">peatlands</span>) and forests.</p>
+      <p class="hero-subtitle">This is the story of where the haze comes from and why some years are much worse than the others.</p>
+    </div>
+  </section>
+
+  <!-- Scroll spacer — replaces the scroll runway the fog wrapper used to provide -->
+  <div class="hero-spacer" aria-hidden="true"></div>
+
+  <!-- Section 1: The Pattern — steps-left / chart-right (45/55) -->
+  <section id="pattern">
+    <div class="story-section-grid">
+      <!-- Steps column -->
+      <div class="steps steps-column">
+        <div class="section-label section-label-header">The Pattern</div>
+        <div data-step="0">
+          <p>Between 2014 and 2024, Singapore usually had about 7 "unhealthy" days (or Haze Days) a year, where the air quality, measured by the Pollutant Standards Index (<span data-term="PSI" tabindex="0" aria-describedby="term-tooltip">PSI</span>), went above 100.</p>
+          <p>Most years pass with little incident, but when conditions align, the numbers will shoot up.</p>
+        </div>
+        <div data-step="1">
+          <p>2015 was the worst year in a decade.</p>
+          <p>Singapore suffered through 46 haze days, with the peak 24-hour <span data-term="PSI" tabindex="0" aria-describedby="term-tooltip">PSI</span> reading hitting a dangerous <span class="psi-peak-2015">322</span>, well into the "hazardous" range. Schools were shut, outdoor work was stopped, and hospitals were filled with people struggling to breathe.</p>
+        </div>
+        <div data-step="2">
+          <p>Interestingly, the haze follows a seasonal pattern.</p>
+          <p>From June to September, during the monsoon season, the <span data-term="SW Monsoon" tabindex="0" aria-describedby="term-tooltip">Southwest Monsoon</span> winds act like a giant fan, blowing haze from Sumatra straight toward Singapore. In the chart showing the daily PSI readings, nearly every major spike falls within the monsoon season.</p>
+        </div>
+      </div>
+      <!-- Chart panel -->
+      <div class="chart-panel" id="chart-pattern">
+        <!-- D3 chart renders here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge 1 → 2 -->
+  <div class="bridge-text">These hazy days always seem to happen during the monsoon season.<br>But where do the fires come from?</div>
+
+  <!-- Section 2: The Source — chart-left / steps-right (55/45) -->
+  <section id="source">
+    <div class="story-section-grid--reversed">
+      <!-- Chart panel -->
+      <div class="chart-panel" id="chart-source">
+        <!-- D3 chart renders here -->
+      </div>
+      <!-- Steps column -->
+      <div class="steps steps-column">
+        <div class="section-label section-label-header">The Source</div>
+        <div data-step="0">
+          <p>The answer is right across the sea in neighbouring Indonesia.</p>
+          <p>Indonesia is the main source. We ranked provinces by how much they impact us (<span data-term="impact score" tabindex="0" aria-describedby="term-tooltip">Impact Score</span>) by dividing the fire detection count by the distance to Singapore.</p>
+          <p>It revealed that a nearby province with fewer fires can impact Singapore's air more than a faraway one with thousands of fires.</p>
+        </div>
+        <div data-step="1">
+          <p>Riau province alone accounts for nearly half of all impact on Singapore's air quality.</p>
+          <p>Even though South Sumatra has far more fires, Riau is only 279km away. Being so close means its smoke hits us much harder.</p>
+        </div>
+        <div data-step="2">
+          <p>Distance is the secret factor.</p>
+          <p>Johor (Malaysia) is only 101 km away, so even a few fires (272) there matter. Central Kalimantan has over 18,000 <span data-term="fire detection" tabindex="0" aria-describedby="term-tooltip">fire detections</span>, but it is so far away (1,115km) that the smoke rarely reaches us.</p>
+          <p class="chart-footnote">Fire detection counts are based on the Visible Infrared Imaging Radiometer Suite (VIIRS), a NASA satellite sensor that detects fire hotspots at 375m resolution. Data from the Suomi NPP and NOAA-20 satellites underpins the fire counts in this analysis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge: Rainfall ruled out -->
+  <div class="bridge-ruled-out">
+    <div class="bridge-ruled-out__image">
+      <img src="images/singapore_rainfall.jpg" alt="Rain falling over Singapore skyline" loading="lazy">
+      <span class="img-credit">Image by: <a href="https://ibtimes.sg/no-monsoon-surge-expected-coming-days-despite-recent-wet-spell-says-weatherman-83187" target="_blank" rel="noopener">IBTimes SG</a></span>
+    </div>
+    <div class="bridge-ruled-out__text">
+      <p class="bridge-ruled-out__label">The Rain Myth</p>
+      <p class="bridge-ruled-out__claim">You might think rain washes the haze away, but the data shows this is not true.</p>
+      <p class="bridge-ruled-out__stat">Our analysis shows that local rain has almost no power to clear the air. It only explains 3% of why the haze leaves after a spike in PSI. If the fires are still burning and the wind is still blowing, rain won't save us.</p>
+    </div>
+  </div>
+
+  <!-- Bridge 2 → 3 -->
+  <div class="bridge-text">The fires are in Indonesia.<br>But what makes some years so much worse than others?</div>
+
+  <!-- Section 3: The Climate Driver — steps-left / chart-right (45/55) -->
+  <section id="climate">
+    <div class="story-section-grid">
+      <!-- Steps column -->
+      <div class="steps steps-column">
+        <div class="section-label section-label-header">The Climate Driver</div>
+        <div data-step="0">
+          <p>The number of fires in Indonesia changes drastically every year.</p>
+          <p>In quiet years, <span data-term="VIIRS" tabindex="0" aria-describedby="term-tooltip">satellites</span> see fewer than 500 fires. In the worst years, they see more than 23,000. Rainfall alone does not explain these massive jumps.</p>
+        </div>
+        <div data-step="1">
+          <p>The key is a weather cycle in the Pacific Ocean.</p>
+          <p>We track a pattern called <span data-term="El Ni&#241;o" tabindex="0" aria-describedby="term-tooltip">El Ni&#241;o</span>, which occurs when the <span data-term="ONI" tabindex="0" aria-describedby="term-tooltip">Oceanic Ni&#241;o Index (ONI)</span> rises to +0.5 or above. When it happens, Southeast Asia becomes much hotter and drier, making it very easy for fires to spread.</p>
+        </div>
+        <div data-step="2">
+          <p>The pattern is striking.</p>
+          <p>In <span data-term="El Ni&#241;o" tabindex="0" aria-describedby="term-tooltip">El Ni&#241;o</span> years, highlighted in red, fire counts spike dramatically. The massive El Ni&#241;o in 2015 coincided with Singapore's worst haze crisis.</p>
+          <p>This weather cycle in the Pacific Ocean is called the <span data-term="ENSO" tabindex="0" aria-describedby="term-tooltip">El Ni&#241;o Southern Oscillation (ENSO)</span>. It is the #1 reason why some years have terrible haze.</p>
+        </div>
+        <div data-step="3">
+          <p>The 2015 crisis was staggering.</p>
+          <p>Indonesia recorded over 23,000 fires, double any other year. The extreme drought turned the ground into a "tinderbox" that caught fire easily, with fires peaking in October with nearly 10,000 detections.</p>
+        </div>
+      </div>
+      <!-- Chart panel -->
+      <div class="chart-panel" id="chart-climate">
+        <!-- D3 chart renders here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge 3 → 4 -->
+  <div class="bridge-text">El Ni&#241;o makes things worse.<br>But something shifted after 2020.</div>
+
+  <!-- Section 4: What Changed — chart-left / steps-right (55/45) -->
+  <section id="change">
+    <div class="story-section-grid--reversed">
+      <!-- Chart panel -->
+      <div class="chart-panel" id="chart-change">
+        <!-- D3 chart renders here -->
+      </div>
+      <!-- Steps column -->
+      <div class="steps steps-column">
+        <div class="section-label section-label-header">What Changed</div>
+        <div data-step="0">
+          <p>Before 2020, Singapore's annual peak <span data-term="PSI" tabindex="0" aria-describedby="term-tooltip">PSI</span> was a roller coaster, with the worst readings recorded during <span data-term="El Ni&#241;o" tabindex="0" aria-describedby="term-tooltip">El Ni&#241;o</span> years.</p>
+        </div>
+        <div data-step="1">
+          <p>Since 2020, the worst haze days have become much milder, dropping by 66 points on average.</p>
+          <p>This was not a one-time dip. The milder pattern remained consistent, with only a minor uptick during an El Ni&#241;o year in 2023.</p>
+        </div>
+        <div data-step="2">
+          <p>So, was it new laws, the COVID pandemic, or just better weather? The answer is likely "all of the above".</p>
+          <p>Indonesia tightened <span data-term="peatland" tabindex="0" aria-describedby="term-tooltip">peatland</span> regulations significantly after the 2015 crisis. President Jokowi established the <a href="https://brg.go.id" target="_blank" rel="noopener" class="story-link">Peatland Restoration Agency (BRG)</a> in 2016, tasked with restoring 2.49 million hectares of degraded peatland. A <a href="https://www.menlhk.go.id" target="_blank" rel="noopener" class="story-link">permanent moratorium on new peatland permits</a> followed in 2019.</p>
+          <p>COVID reduced economic activity, and pandemic-era restrictions in Indonesia likely curtailed land-clearing operations as well.</p>
+          <p>A wet weather pattern called <span data-term="La Niña" tabindex="0" aria-describedby="term-tooltip">"La Ni&#241;a"</span> (marked by the ONI index being below -0.5), kept the region damp and harder to burn.</p>
+        </div>
+        <div data-step="3">
+          <p>To test whether the improvement was real, we built a predictive model trained on fire activity, wind, and the <span data-term="ENSO" tabindex="0" aria-describedby="term-tooltip">El Ni&#241;o Southern Oscillation (ENSO)</span> weather cycle.</p>
+          <p>It classifies each day into <span data-term="risk tier" tabindex="0" aria-describedby="term-tooltip">risk tiers</span> and suggests that the post-2020 improvement is structural, not just a run of good weather. You can explore day-by-day predictions in the <a href="explorer.html" class="story-link">Explorer tool</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge: COVID mobility ruled out -->
+  <div class="bridge-ruled-out">
+    <div class="bridge-ruled-out__image">
+      <img src="images/singapore_empty_street.avif" alt="Empty streets in Singapore during COVID-19 restrictions" loading="lazy">
+      <span class="img-credit">Image by: <a href="https://www.channelnewsasia.com/singapore/covid-19-cases-circuit-breaker-distancing-infectious-diseases-620486" target="_blank" rel="noopener">CNA</a></span>
+    </div>
+    <div class="bridge-ruled-out__text">
+      <p class="bridge-ruled-out__label">What the data ruled out</p>
+      <p class="bridge-ruled-out__claim">Did the haze drop only because of COVID lockdowns? We checked the data, and the answer is no.</p>
+      <p class="bridge-ruled-out__stat">The air is cleaner because there are fewer fires being lit, not just because people stayed at home (<span data-term="mobility data" tabindex="0" aria-describedby="term-tooltip">mobility data</span> has zero predictive power after controlling for fire counts).</p>
+    </div>
+  </div>
+
+  <!-- Conclusion -->
+  <section class="conclusion conclusion-section">
+    <div class="conclusion-inner">
+      <h2 class="conclusion-title">The haze is not random.</h2>
+      <p class="conclusion-body">It is a predictable cycle driven by fires in nearby places like Johor and Riau, carried by monsoon winds, and made worse by dry El Ni&#241;o years. Rainfall does not help as much as people think. When the wind blows haze from burning peatlands towards Singapore, even wet weather cannot wash the air clean.</p>
+      <p class="conclusion-body conclusion-body--spaced">Because we understand these factors, we can now predict "High Risk" days before the haze even reaches Singapore.</p>
+      <p class="conclusion-body">Use the <a href="explorer.html" class="story-link">Explorer tool</a> to see how fire, wind, and weather cycles work together. You can even check any past date to see its predicted risk level.</p>
+      <ul class="conclusion-takeaways">
+        <li><strong>Distance and Wind:</strong> How close a fire is what matters most. Because Johor and Riau are nearby, the Southwest Monsoon winds may blow its smoke directly to us, hitting Singapore's air quality the hardest.</li>
+        <li><strong>The El Ni&#241;o Factor:</strong> During dry El Ni&#241;o years, the number of fires dramatically increases, creating the perfect conditions for a major haze crisis.</li>
+        <li><strong>The Post-2020 Drop:</strong> The cleaner air since 2020 is real. It is likely a mix of better laws, wetter weather, and changes caused by the pandemic.</li>
+      </ul>
+      <a href="explorer.html" class="cta-link">Explore the Data</a>
+    </div>
+  </section>
+
+  <!-- Shared footer -->
+  <footer class="site-footer">
+    <p class="footer-text">CS5346 Information Visualization, Team 1</p>
+    <p class="footer-text footer-text--contributors">Cheng Jiang &middot; Kai Yit &middot; Kaushik &middot; Linda &middot; Shao Wei</p>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

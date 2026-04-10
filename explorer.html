@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seeing through the Haze | Explorer</title>
+  <style>
+    .filter-reset-btn {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1A6B73;
+      background: transparent;
+      border: 1px solid #1A6B73;
+      border-radius: 2px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: background 150ms, color 150ms;
+      white-space: nowrap;
+    }
+    .filter-reset-btn:hover {
+      background: #1A6B73;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+
+  <!-- Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-inner--wide">
+      <a href="index.html" class="nav-title" style="text-decoration:none;color:inherit;">Seeing through the Haze</a>
+      <div class="nav-links">
+        <span id="psi-badge" class="psi-badge">PSI: ...</span>
+        <a href="index.html" class="nav-link nav-link--inactive">Story</a>
+        <a href="explorer.html" class="nav-link nav-link--active">Explorer</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Intro section -->
+  <section class="explorer-intro">
+    <h1 class="explorer-intro__title">Interactive Explorer</h1>
+    <p class="explorer-intro__body">Filter by year, season, or climate phase to understand what conditions drive Singapore's air quality.</p>
+  </section>
+
+  <!-- Explorer layout: charts left, filters right -->
+  <div class="explorer-layout">
+
+  <!-- Chart grid (3x2) -->
+  <div class="explorer-chart-grid">
+
+    <!-- Row 1, Left: Annual trend -->
+    <div class="explorer-card" id="chart-trend">
+      <h3 class="explorer-card__title">Haze Days per Year, 2014&#8211;2024</h3>
+      <div class="chart-container"></div>
+    </div>
+
+    <!-- Row 1, Right: Monthly PSI timeline -->
+    <div class="explorer-card" id="chart-monthly">
+      <h3 class="explorer-card__title">Monthly PSI by Year</h3>
+      <div class="chart-container"></div>
+    </div>
+
+    <!-- Row 2, Left: Fire vs PSI scatter -->
+    <div class="explorer-card" id="chart-scatter">
+      <h3 class="explorer-card__title">Monthly Fire Count vs PSI</h3>
+      <div class="chart-container"></div>
+    </div>
+
+    <!-- Row 2, Right: Risk tier distribution -->
+    <div class="explorer-card" id="chart-tiers">
+      <h3 class="explorer-card__title">Risk Tier Distribution by Year</h3>
+      <div class="chart-container"></div>
+    </div>
+
+    <!-- Row 3, Left: Province bar -->
+    <div class="explorer-card" id="chart-province">
+      <h3 class="explorer-card__title">Fire Impact by Province</h3>
+      <div class="chart-container"></div>
+    </div>
+
+    <!-- Row 3, Right: Day picker + prediction -->
+    <div class="explorer-card" id="chart-daypicker">
+      <h3 class="explorer-card__title">Daily Risk Prediction</h3>
+      <div class="chart-container"></div>
+    </div>
+
+  </div>
+
+  <!-- Filter sidebar (right) -->
+  <aside id="filter-bar" class="explorer-sidebar">
+    <h3 class="explorer-sidebar__title">Filters</h3>
+
+    <!-- Year range slider -->
+    <fieldset class="filter-group">
+      <legend class="filter-group__legend">Year Range</legend>
+      <div id="year-slider" class="year-slider"></div>
+    </fieldset>
+
+    <!-- Season pill toggles -->
+    <fieldset id="season-pills" class="filter-group">
+      <legend class="filter-group__legend">Season</legend>
+      <div class="pill-group">
+        <label class="pill-toggle">
+          <input type="checkbox" value="sw-monsoon" />
+          <span class="pill-toggle__label">SW Monsoon</span>
+        </label>
+        <label class="pill-toggle">
+          <input type="checkbox" value="ne-monsoon" />
+          <span class="pill-toggle__label">NE Monsoon</span>
+        </label>
+        <label class="pill-toggle">
+          <input type="checkbox" value="inter-monsoon" />
+          <span class="pill-toggle__label">Inter-Monsoon</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- ENSO pill toggles -->
+    <fieldset id="enso-pills" class="filter-group">
+      <legend class="filter-group__legend">ENSO Phase</legend>
+      <div class="pill-group">
+        <label class="pill-toggle">
+          <input type="checkbox" value="el-nino" />
+          <span class="pill-toggle__label">El Ni&#241;o</span>
+        </label>
+        <label class="pill-toggle">
+          <input type="checkbox" value="la-nina" />
+          <span class="pill-toggle__label">La Ni&#241;a</span>
+        </label>
+        <label class="pill-toggle">
+          <input type="checkbox" value="neutral" />
+          <span class="pill-toggle__label">Neutral</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Active filter chips container -->
+    <div id="filter-chips" class="filter-chips-container filter-chips-container--vertical"></div>
+
+    <!-- Reset all filters -->
+    <button id="filter-reset" class="filter-reset-btn filter-reset-btn--full" type="button" style="display:none;">Reset All</button>
+  </aside>
+
+  </div><!-- /.explorer-layout -->
+
+  <!-- Sources section -->
+  <section class="explorer-sources">
+    <div class="explorer-sources__inner">
+      <h2 class="explorer-sources__title">Want to explore the data yourself?</h2>
+      <p class="explorer-sources__body">The datasets behind this project are publicly available. Download them and run your own analysis.</p>
+      <div class="explorer-sources__grid">
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">Air Quality (PSI &amp; PM2.5)</h3>
+          <p class="explorer-sources__item-desc">24-hour PSI and hourly PM2.5 readings from Singapore's National Environment Agency (NEA). Covers all monitoring stations.</p>
+          <p class="explorer-sources__item-meta">Coverage: 2014&#8211;2024 &middot; Retrieved: Mar 2025</p>
+          <a href="https://data.gov.sg" class="explorer-sources__link" target="_blank" rel="noopener">data.gov.sg &nearr;</a>
+        </div>
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">Fire Detections (NASA FIRMS)</h3>
+          <p class="explorer-sources__item-desc">VIIRS satellite-detected fire hotspots from Suomi NPP and NOAA-20 at 375m resolution. Archive and near-real-time data for Southeast Asia.</p>
+          <p class="explorer-sources__item-meta">Coverage: 2014&#8211;2024 &middot; Retrieved: Mar 2025</p>
+          <a href="https://firms.modaps.eosdis.nasa.gov" class="explorer-sources__link" target="_blank" rel="noopener">firms.modaps.eosdis.nasa.gov &nearr;</a>
+        </div>
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">Weather (data.gov.sg API)</h3>
+          <p class="explorer-sources__item-desc">Real-time and historical wind speed, wind direction, air temperature, and relative humidity readings from stations across Singapore.</p>
+          <p class="explorer-sources__item-meta">Coverage: 2020&#8211;2024 &middot; Retrieved: Mar 2025</p>
+          <a href="https://data.gov.sg" class="explorer-sources__link" target="_blank" rel="noopener">data.gov.sg &nearr;</a>
+        </div>
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">ENSO Index (ONI)</h3>
+          <p class="explorer-sources__item-desc">3-month running mean of sea surface temperature anomalies in the Ni&#241;o 3.4 region, published by NOAA's Climate Prediction Center.</p>
+          <p class="explorer-sources__item-meta">Coverage: Historical &middot; Retrieved: Mar 2025</p>
+          <a href="https://www.cpc.ncep.noaa.gov/data/indices/" class="explorer-sources__link" target="_blank" rel="noopener">cpc.ncep.noaa.gov &nearr;</a>
+        </div>
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">Burned Area (GWIS/MODIS)</h3>
+          <p class="explorer-sources__item-desc">MCD64A1 burned area product at 500m resolution. Provides monthly global burned area estimates from MODIS satellite imagery.</p>
+          <p class="explorer-sources__item-meta">Coverage: 2002&#8211;2024 &middot; Retrieved: Mar 2025</p>
+          <a href="https://gwis.jrc.ec.europa.eu" class="explorer-sources__link" target="_blank" rel="noopener">gwis.jrc.ec.europa.eu &nearr;</a>
+        </div>
+        <div class="explorer-sources__item">
+          <h3 class="explorer-sources__item-title">Fire Emissions (GFED &amp; GFAS)</h3>
+          <p class="explorer-sources__item-desc">Global Fire Emissions Database (GFED) and Copernicus Global Fire Assimilation System (GFAS) emissions estimates for biomass burning.</p>
+          <p class="explorer-sources__item-meta">Coverage: 2002&#8211;2024 &middot; Retrieved: Mar 2025</p>
+          <a href="https://www.globalfiredata.org" class="explorer-sources__link" target="_blank" rel="noopener">globalfiredata.org &nearr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shared footer -->
+  <footer class="site-footer--bordered">
+    <div class="footer-inner">
+      <p class="footer-text">CS5346 Information Visualization, Team 1</p>
+      <p class="footer-text footer-text--contributors">Cheng Jiang &middot; Kai Yit &middot; Kaushik &middot; Linda &middot; Shao Wei</p>
+      <p class="footer-text">
+        <a href="index.html" class="nav-link--active">Story</a>
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/explorer-main.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "cs5346-team1-seeing-through-the-haze",
+  "version": "1.0.0",
+  "description": "Singapore haze data visualization - scrollytelling site and interactive explorer",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "d3": "^7.9.0",
+    "d3-interpolate-path": "^2.3.0",
+    "gsap": "^3.14.2",
+    "nouislider": "^15.8.1",
+    "scrollama": "^3.2.0",
+    "tailwindcss": "^4.2.2",
+    "topojson-client": "^3.1.0",
+    "topojson-server": "^3.0.1",
+    "topojson-simplify": "^3.0.3",
+    "vite": "^8.0.1",
+    "world-atlas": "^2.0.2"
+  }
+}

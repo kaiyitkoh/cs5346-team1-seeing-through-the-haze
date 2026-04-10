@@ -1,0 +1,1226 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@theme {
+  /* Direction B: Clean Editorial Light */
+
+  /* Accent (10%) */
+  --color-primary: #1A6B73;
+  --color-accent: #1A6B73;
+
+  /* Dominant (60%) */
+  --color-surface: #FAFAF8;
+  --color-background: #FAFAF8;
+
+  /* Secondary (30%) */
+  --color-surface-secondary: #F0EEEA;
+
+  /* Text */
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #5A5A5A;
+
+  /* Border */
+  --color-border: #D8D4CE;
+
+  /* Typography */
+  --font-headline: "Newsreader", serif;
+  --font-body: "Public Sans", sans-serif;
+
+  /* Border radii — 2px per Direction B */
+  --radius: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headline);
+    font-weight: 600;
+  }
+
+  a { color: var(--color-primary); }
+  a:visited { color: var(--color-primary); }
+  a:hover { opacity: 0.85; }
+}
+
+@layer components {
+  /* Nav bar */
+  .nav-bar {
+    background: var(--color-surface-secondary);
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* Nav dot indicator */
+  .nav-dot {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 300ms ease, opacity 300ms ease, transform 300ms ease;
+    opacity: 0.5;
+    padding: 0;
+  }
+  /* 44px minimum tap target via pseudo-element */
+  .nav-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+  }
+  .nav-dot.active {
+    background: var(--color-primary);
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  .nav-dot:hover {
+    opacity: 1;
+  }
+  /* Tooltip via CSS ::before */
+  .nav-dot::before {
+    content: attr(data-label);
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background: var(--color-surface-secondary);
+    color: var(--color-text-primary);
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms;
+    font-family: var(--font-body);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+  }
+  .nav-dot:hover::before,
+  .nav-dot.active::before {
+    opacity: 1;
+  }
+
+  /* Step active/inactive states */
+  [data-step] {
+    opacity: 0.4;
+    transition: opacity 600ms ease;
+    padding-left: 0;
+    border-left: 3px solid transparent;
+    /* Layout: each step occupies full viewport height for Scrollama boundary detection */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  [data-step].step-active {
+    opacity: 1;
+    border-left: 3px solid var(--color-primary);
+    padding-left: 12px;
+  }
+
+  /* Step text typography */
+  [data-step] p {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 56ch;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  /* Bridge text — transition element between sections */
+  .bridge-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 80px 32px;
+    font-family: var(--font-headline);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: var(--color-text-primary);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .bridge-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Decorative line above */
+  .bridge-text::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--color-primary);
+    opacity: 0.5;
+  }
+  /* Bouncing down arrow */
+  .bridge-text::after {
+    content: '\2193';
+    display: block;
+    font-size: 28px;
+    color: var(--color-primary);
+    animation: bridge-bounce 1.8s ease-in-out infinite;
+  }
+  @keyframes bridge-bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(14px); opacity: 0.9; }
+  }
+
+  /* Section heading sticky labels inside .steps column */
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  /* Tooltip term marker */
+  [data-term] {
+    border-bottom: 1px dotted rgba(26, 107, 115, 0.4);
+    color: var(--color-text-primary);
+    cursor: help;
+    transition: border-color 150ms;
+  }
+  [data-term]::after {
+    content: '\2071';
+    font-size: 0.75em;
+    position: relative;
+    top: -0.4em;
+    line-height: 0;
+    color: var(--color-primary);
+    margin-left: 1px;
+  }
+  [data-term]:hover {
+    border-bottom-color: var(--color-primary);
+  }
+  [data-term]:hover::after {
+    color: var(--color-primary);
+  }
+
+  /* Singleton tooltip card */
+  .tooltip-card {
+    position: fixed;
+    z-index: 50;
+    max-width: 240px;
+    padding: 8px 12px;
+    background: #FFFFFF;
+    border: 2px solid var(--color-border);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+
+  .tooltip-card.tooltip-visible {
+    opacity: 1;
+  }
+
+  /* Chart data hover tooltips (bar/dot hover) */
+  .chart-tooltip {
+    background: #FFFFFF;
+    border: 2px solid var(--color-border);
+    border-radius: 2px;
+    padding: 12px;
+    box-shadow: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    pointer-events: none;
+    z-index: 200;
+    white-space: nowrap;
+    transition: opacity 150ms ease;
+  }
+
+  /* Chart panel — sticky, fills viewport height */
+  .chart-panel {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background: var(--color-surface);
+    border: none;
+    box-shadow: none;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Chart SVG text overrides */
+  .chart-panel text {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    fill: var(--color-text-secondary);
+  }
+
+  /* Live PSI badge */
+  .psi-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 200ms ease;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Nav inner layout */
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  /* Nav inner layout (explorer — wider max-width) */
+  .nav-inner--wide {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  /* Nav title */
+  .nav-title {
+    font-family: var(--font-headline);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--color-text-primary);
+  }
+
+  /* Nav links container */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  /* Nav link base */
+  .nav-link {
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .nav-link--active {
+    color: var(--color-primary);
+  }
+  .nav-link--active:visited {
+    color: var(--color-primary);
+  }
+  .nav-link--inactive {
+    color: var(--color-text-secondary);
+  }
+  .nav-link--inactive:visited {
+    color: var(--color-text-secondary);
+  }
+
+  /* PSI badge base (already has psi-badge, this adjusts inline override) */
+  .psi-badge--inline {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    padding: 4px 8px;
+  }
+
+  /* Nav dots (fixed right sidebar) */
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Hero section */
+  .hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  /* Scroll spacer after hero — provides transition space before first chart */
+  .hero-spacer {
+    height: 30vh;
+    background: var(--color-surface);
+  }
+
+  /* Hero background image */
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+  }
+
+  /* Hero gradient overlay — ensures title text remains readable on brightened image */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(250,250,248,0.15) 0%, rgba(250,250,248,0.5) 100%);
+    pointer-events: none;
+  }
+
+  /* Hero content */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 1024px;
+    padding: 96px 32px;
+  }
+
+  /* Hero title */
+  .hero-title {
+    font-family: var(--font-headline);
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin-bottom: 24px;
+  }
+
+  /* Hero subtitle */
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 960px;
+    margin: 0 auto 24px;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .hero-subtitle:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Story section grid */
+  .story-section-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-right: 32px;
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    min-height: 100vh;
+  }
+
+  /* Story section grid — reversed (chart-left) */
+  .story-section-grid--reversed {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-right: 32px;
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    min-height: 100vh;
+  }
+
+  /* Steps column */
+  .steps-column {
+    padding: 0 32px;
+  }
+
+  /* Section label padding */
+  .section-label-header {
+    padding: 64px 0 16px;
+  }
+
+  /* Conclusion section */
+  .conclusion-section {
+    padding: 96px 32px;
+    text-align: center;
+    background: var(--color-surface);
+  }
+
+  /* Conclusion inner container */
+  .conclusion-inner {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* Conclusion heading */
+  .conclusion-title {
+    font-family: var(--font-headline);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    margin-bottom: 24px;
+  }
+
+  /* Conclusion body copy */
+  .conclusion-body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  /* Conclusion body with bottom margin */
+  .conclusion-body--spaced {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  /* Inline story links */
+  .story-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 2px;
+    transition: text-decoration-color 150ms;
+  }
+  .story-link:hover {
+    text-decoration-color: var(--color-primary);
+  }
+
+  /* CTA button link */
+  .cta-link {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--color-primary);
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    animation: cta-pulse 2.5s ease-in-out infinite;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cta-link:hover {
+    transform: scale(1.05);
+    animation: none;
+    box-shadow: 0 4px 16px rgba(26, 107, 115, 0.35);
+  }
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(26, 107, 115, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(26, 107, 115, 0); }
+  }
+  .cta-link:visited {
+    color: #FFFFFF;
+  }
+
+  /* Site footer */
+  .site-footer {
+    background: var(--color-surface-secondary);
+    padding: 32px;
+    text-align: center;
+  }
+
+  /* Explorer sources section */
+  .explorer-sources {
+    max-width: 1400px;
+    margin: 64px auto 0;
+    padding: 0 32px;
+  }
+
+  .explorer-sources__inner {
+    border-top: 1px solid var(--color-border);
+    padding-top: 48px;
+  }
+
+  .explorer-sources__title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0 0 8px;
+  }
+
+  .explorer-sources__body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    margin: 0 0 32px;
+    line-height: 1.6;
+  }
+
+  .explorer-sources__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .explorer-sources__item {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 20px;
+  }
+
+  .explorer-sources__item-title {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 6px;
+  }
+
+  .explorer-sources__item-desc {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0 0 6px;
+    line-height: 1.5;
+  }
+
+  .explorer-sources__item-meta {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #999;
+    margin: 0 0 10px;
+  }
+
+  .explorer-sources__link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .explorer-sources__link:hover {
+    text-decoration: underline;
+  }
+
+  /* Explorer footer (with border-top) */
+  .site-footer--bordered {
+    background: var(--color-surface-secondary);
+    border-top: 1px solid var(--color-border);
+    padding: 32px;
+    margin-top: 48px;
+  }
+
+  /* Footer inner container */
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Footer text */
+  .footer-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .footer-text--contributors {
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    margin-top: 4px;
+  }
+
+  /* Footer text with margin-top */
+  .footer-text--spaced {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+  }
+
+  /* Explorer intro section */
+  .explorer-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 32px 24px;
+  }
+
+  /* Explorer intro heading */
+  .explorer-intro__title {
+    font-family: var(--font-headline);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+  }
+
+  /* Explorer intro body */
+  .explorer-intro__body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Explorer layout: charts + sidebar */
+  .explorer-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* Explorer filter sidebar (right) */
+  .explorer-sidebar {
+    position: sticky;
+    top: 72px;
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .explorer-sidebar__title {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    margin: 0 0 4px 0;
+  }
+
+  /* Filter group (fieldset) */
+  .filter-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .filter-group__legend {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+  }
+
+  /* noUiSlider theme overrides — Direction B palette */
+  .year-slider {
+    margin: 8px 14px 36px;
+  }
+
+  .noUi-target {
+    background: var(--color-border);
+    border: none;
+    border-radius: 2px;
+    height: 6px;
+    box-shadow: none;
+  }
+
+  .noUi-connect {
+    background: var(--color-primary);
+  }
+
+  .noUi-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    top: -6px;
+    right: -8px;
+    cursor: grab;
+  }
+
+  .noUi-handle::before,
+  .noUi-handle::after {
+    display: none;
+  }
+
+  .noUi-handle:active {
+    cursor: grabbing;
+  }
+
+  /* Hide tooltips — pip labels are sufficient */
+  .noUi-tooltip {
+    display: none !important;
+  }
+
+  .noUi-pips {
+    font-family: var(--font-body);
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    padding: 6px 0 0;
+  }
+
+  .noUi-pips-horizontal {
+    height: 28px;
+  }
+
+  .noUi-marker-horizontal.noUi-marker-large {
+    height: 8px;
+  }
+
+  .noUi-marker {
+    background: var(--color-border);
+  }
+
+  .noUi-value {
+    color: var(--color-text-secondary);
+    font-size: 10px;
+  }
+
+  .noUi-value-horizontal {
+    transform: translate(-50%, 0);
+    padding-top: 2px;
+  }
+
+  /* Pill toggle group */
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pill-toggle {
+    cursor: pointer;
+    display: inline-flex;
+  }
+
+  .pill-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .pill-toggle__label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 4px 10px;
+    transition: background 150ms, color 150ms, border-color 150ms;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .pill-toggle__label:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .pill-toggle input:checked + .pill-toggle__label {
+    background: var(--color-primary);
+    color: #FFFFFF;
+    border-color: var(--color-primary);
+  }
+
+  .pill-toggle input:focus-visible + .pill-toggle__label {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Filter chips container */
+  .filter-chips-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-chips-container--vertical {
+    flex-direction: column;
+  }
+
+  .filter-reset-btn--full {
+    width: 100%;
+  }
+
+  /* Day picker components */
+  .daypicker-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 0;
+    width: 100%;
+    font-family: var(--font-body);
+  }
+
+  .daypicker-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .daypicker-input {
+    padding: 6px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    background: #FFFFFF;
+    margin-bottom: 4px;
+    width: auto;
+  }
+
+  .daypicker-no-data {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    margin: 0;
+    display: none;
+  }
+
+  /* Card container */
+  .daypicker-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Conditions box */
+  .daypicker-conditions {
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .daypicker-conditions-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .daypicker-cond-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 2px 0;
+  }
+
+  .daypicker-cond-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .daypicker-cond-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .daypicker-conditions-note {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* Prediction vs Actual row */
+  .daypicker-pred-actual-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .daypicker-pred-col {
+    flex: 1.2;
+    min-width: 0;
+  }
+
+  .daypicker-actual-col {
+    flex: 0.8;
+    min-width: 0;
+  }
+
+  .daypicker-section-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .daypicker-tier-value {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: color 300ms;
+    margin-bottom: 8px;
+  }
+
+  .daypicker-tier-bar-wrapper {
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
+  .daypicker-actual-psi {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: color 300ms;
+    margin-bottom: 4px;
+  }
+
+  .daypicker-obs-label {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+  }
+
+  .daypicker-obs-tier {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    transition: color 300ms;
+  }
+
+  /* Match indicator */
+  .daypicker-match {
+    border-top: 1px solid var(--color-border);
+    padding-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .daypicker-match--yes {
+    color: #14532D;
+  }
+
+  .daypicker-match--no {
+    color: #B91C1C;
+  }
+
+  .daypicker-match-icon {
+    margin-right: 4px;
+  }
+
+  /* Filter chips */
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid var(--color-primary);
+    border-radius: 2px;
+    font-size: 13px;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+
+  /* Filter chip close button */
+  .filter-chip__close {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  /* Explorer chart grid */
+  .explorer-chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  /* Ruled-out factor bridges — full-width band with image + text */
+  .bridge-ruled-out {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 48px auto;
+    padding: 64px 32px;
+    background: var(--color-surface);
+  }
+  .bridge-ruled-out__image {
+    position: relative;
+  }
+  .bridge-ruled-out__image img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--color-border);
+  }
+  /* Image credit overlay — bottom-right corner */
+  .img-credit {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 10px;
+    font-family: 'Public Sans', sans-serif;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 2px;
+    z-index: 3;
+  }
+  .img-credit a {
+    color: inherit;
+    text-decoration: none;
+  }
+  [data-step] p.chart-footnote {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8A8A82;
+    font-style: italic;
+    max-width: 56ch;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border, #D8D4CE);
+  }
+  .img-credit a:hover {
+    text-decoration: underline;
+  }
+  .bridge-ruled-out__label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    font-family: var(--font-body);
+  }
+  .bridge-ruled-out__claim {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+    font-family: var(--font-body);
+  }
+  .bridge-ruled-out__stat {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-style: italic;
+  }
+
+  /* Conclusion takeaway bullets */
+  .conclusion-takeaways {
+    text-align: left;
+    max-width: 760px;
+    margin: 24px auto;
+    padding: 0;
+    list-style: none;
+  }
+  .conclusion-takeaways li {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    padding: 8px 0 8px 16px;
+    border-left: 2px solid var(--color-border);
+    font-family: var(--font-body);
+  }
+
+  /* Explorer chart card */
+  .explorer-card {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    padding: 24px;
+    min-height: 360px;
+    overflow: visible;
+  }
+
+  /* Explorer card heading */
+  .explorer-card__title {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 16px;
+  }
+
+  /* Chart container inside explorer cards */
+  .explorer-card .chart-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Day picker card needs auto height for variable-length conditions list */
+  #chart-daypicker .chart-container {
+    height: auto;
+    min-height: 300px;
+  }
+}
+
+/* Hide nav-dot labels on narrow viewports */
+@media (max-width: 1400px) {
+  .nav-dot::before {
+    display: none;
+  }
+}
