@@ -4,6 +4,8 @@ CS5346 Information Visualization — Team 1
 
 An interactive visualization of Singapore's air quality, exploring how transboundary fires, wind patterns, and El Nino drive haze episodes.
 
+**Live site:** https://kaiyitkoh.github.io/cs5346-team1-seeing-through-the-haze/
+
 **Two-part site:**
 1. **Story page** (`index.html`) — Scroll-driven narrative with animated D3 charts
 2. **Explorer page** (`explorer.html`) — Interactive cross-filtering dashboard to explore the data
